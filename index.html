@@ -4,46 +4,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+      integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+      crossorigin="anonymous"
+    />
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
     <link rel="stylesheet" href="css/main.min.css" />
+
     <title>Han's homepage</title>
   </head>
 
-  <header>
-    <nav>
-      <ul>
-        <li class="logo"><a href="index.html">Homepage Button</a></li>
-        <li><a href="menu.html">Menu</a></li>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="locations.html">Locations</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
-  <section class="features">
-    <figure>
-      <img src="images/baboon2.jpg" alt="baboon">
-      <figcaption>baboon yawning...</figcaption>
-    </figure>
-    
-    <figure>
-      <img src="images/baboon3.jpg" alt="baboon">
-      <figcaption>baboon not care</figcaption>
-    </figure>
-    <figure>
-      <img src="images/baboon4.jpg" alt="baboon">
-      <figcaption>baboon sad...</figcaption>
-    </figure>
-  </section>
+  <body id="bg-img-index">
+    <header>
+      <div class="menu-btn">
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+      </div>
 
-  <body>
-    Test padding
-    <ul><li>same section</li>
-    <li>same section</li>
-    <li>same section</li></ul>
+      <nav class="menu">
+        <div class="menu-branding">
+          <div class="portrait"></div>
+        </div>
+        <ul class="menu-nav">
+          <li class="nav-item current">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="pages/work.html" class="nav-link">My Work</a>
+          </li>
+          <li class="nav-item">
+            <a href="pages/interest.html" class="nav-link">My Interests</a>
+          </li>
+          <li class="nav-item">
+            <a href="pages/about.html" class="nav-link">About Me</a>
+          </li>
+          <li class="nav-item">
+            <a href="pages/contact.html" class="nav-link">Contact Me</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="home">
+      <h1 class="lg-heading">
+        Zhicheng <span class="text-secondary">Han</span>
+      </h1>
+      <h2 class="sm-heading">
+        Curious Bastard
+      </h2>
+      <div class="icons">
+        <a href="http://github.com/hanzckernel/"
+          ><i class="fab fa-github fa-4x"></i
+        ></a>
+        <a href="http://www.linkedin.com/in/zhicheng-han-04a57b4b/">
+          <i class="fab fa-linkedin fa-4x"></i
+        ></a>
+        <a href="mailto:hanzc.kernel@gmail.com"
+          ><i class="fas fa-envelope fa-4x"></i
+        ></a>
+      </div>
+    </main>
     <script src="js/main.js"></script>
-  </body>
-  <footer>
-    18 Heaven Road, Jerusalem • hanzc.kernel@gmail.com
-  </footer>
   </body>
 </html>

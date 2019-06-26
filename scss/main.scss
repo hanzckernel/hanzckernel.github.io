@@ -1,114 +1,121 @@
-body {
-  background: rgb(58, 58, 58);
-  color: white;
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 20px;
-  text-align: center;
-  margin: 0;
-  padding: 0;
+@import "config";
+@import "menu";
+
+// html {
+//   font-size: 10px;
+// }
+
+* {
+  box-sizing: border-box;
 }
 
-/* HEADER */
+body {
+  @include background();
+  background: $primary-color;
+  color: #fff;
+  height: 100%;
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
+}
+
+// Heading
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 400;
+
+  &.lg-heading {
+    font-size: 6rem;
+  }
+
+  &.sm-heading {
+    margin-bottom: 2rem;
+    padding: 0.2rem 1rem;
+    background: rgba(lighten($primary-color, 5), 0.25);
+  }
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
 
 header {
-  background-color: black;
-  background-image: url("../images/baboon1.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  height: 400px;
-  padding: 40px;
-  text-align: center;
+  position: fixed;
+  z-index: 2;
+  width: 100%;
 }
 
-header a {
-  color: midnightblue;
-  font-size: 25px;
-  text-decoration: none;
-  text-transform: uppercase;
-  margin-top: 40px;
-  margin-left: 70px;
-  display: flex;
+.text-secondary {
+  color: $secondary-color;
 }
 
-header .logo a {
-  background-image: url("../images/home.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  height: 260px;
-  margin-left: -40px;
-  position: relative;
-  text-indent: -999999px;
-  top: -30px;
-  width: 200px;
-}
+main {
+  padding: 4rem;
+  min-height: calc(100vh - 50px);
 
-nav {
-  float: left;
-  margin-left: 20px;
-  text-align: center;
-}
+  .icon,
+  .icons {
+    margin-top: 1rem;
 
-nav ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
+    a {
+      padding: 0.6rem;
 
-nav li {
-  display: inline-block;
-  margin-right: 20px;
-}
+      &:hover {
+        color: $secondary-color;
+        @include easeOut();
+      }
+    }
+  }
 
-// Responsive Rules
-@media screen and (max-width: 600px) {
-  header .logo a {
-    display: none;
+  &#home {
+    overflow: hidden;
+    h1 {
+      margin-top: 20vh;
+    }
   }
 }
-@media screen and (max-width: 800px) {
-  header a {
-    font-size: 15px;
-    margin-left: 35px;
+
+.about-info {
+  display: grid;
+  grid-gap: 30px;
+  grid-template-areas:
+    "bio-image bio bio"
+    "job1 job2 job3";
+  grid-template-columns: repeat(3, 1fr);
+
+  .bio-image {
+    grid-area: bio-image;
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    margin: auto;
+    border-radius: 50%;
+    border: $secondary-color 3px solid;
+  }
+
+  @for $i from 1 through 3 {
+    .job-#{$i} {
+      grid-area: job#{$i};
+    }
+  }
+
+  .job {
+    background: lighten($primary-color, 5);
+    padding: 0.5rem;
+    border-top: $secondary-color 3px solid;
   }
 }
-/* FEATURES */
 
-.features {
-  background: white;
-  color: gray;
-  padding: 20px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.features figure {
-  margin: auto;
+#main-footer {
   text-align: center;
-  text-transform: uppercase;
-  width: 200px;
+  padding: 1rem;
+  background: darken($color: $primary-color, $amount: 10);
+  color: setTextColor($primary-color);
+  height: 50px;
 }
 
-.features figure img {
-  border: 1px solid white;
-  border-radius: 30%;
-  box-shadow: gray 10px 0 10px;
-  height: 300px;
-  width: 200px;
-}
-
-.features figure figcaption {
-  width: 200px;
-  font-size: 20px;
-}
-
-/* FOOTER */
-
-footer {
-  background: black;
-  color: gray;
-  font-size: 12px;
-  padding: 20px 20px;
-  text-align: center;
-}
+// Here begins the media query
+@import "mobile";
