@@ -1,6 +1,5 @@
 .vscode/*
 .pytest_cache/
-js/*
 scss/*
 *.scss
 
