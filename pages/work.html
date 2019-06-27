@@ -12,7 +12,22 @@
     />
     <link rel="shortcut icon" type="image/png" href="../images/favicon.png" />
     <link rel="stylesheet" href="../css/main.min.css" />
-
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+          processEscapes: true
+        },
+        "HTML-CSS": { fonts: ["TeX"] }
+      });
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+      async
+    ></script>
     <title>Han's homepage</title>
   </head>
 
@@ -49,25 +64,57 @@
       </nav>
     </header>
 
-    <main id="home">
-      <h1 class="lg-heading">
-        Zhicheng <span class="text-secondary">Han</span>
-      </h1>
+    <main id="work">
+      <h1 class="lg-heading">My <span class="text-secondary">Work</span></h1>
       <h2 class="sm-heading">
-        Curious Bastard
+        Some of my past works/projects
       </h2>
-      <div class="icons">
-        <a href="http://github.com/hanzckernel/"
-          ><i class="fab fa-github fa-2x"></i
-        ></a>
-        <a href="http://www.linkedin.com/in/zhicheng-han-04a57b4b/">
-          <i class="fab fa-linkedin fa-2x"></i
-        ></a>
-        <a href="http://opricer.herokuapp.com"
-          ><i class="fab fa-python fa-2x"></i
-        ></a>
+      <div class="projects">
+        <div class="item">
+          <a href="http://opricer.herokuapp.com">
+            <img src="../images/shou.png" alt="Opricer" />
+          </a>
+          <a href="http://opricer.herokuapp.com" class="btn-light">
+            <i class="fas fa-eye"></i>
+            Option Pricing Project
+          </a>
+          <a href="https://github.com/hanzckernel/opricer" class="btn-dark">
+            <i class="fab fa-github"></i>
+            Source code @ Github
+          </a>
+          </div>
+          <div class="item">
+            <a href="../content/Masterthesis.pdf">
+              <img src="../images/po.png" alt="Opricer" />
+            </a>
+            <a href="../content/Masterthesis.pdf" class="btn-light">
+              <i class="fas fa-file-pdf"></i>
+              Analytic Aspect of $L^2$-Invariants
+            </a>
+            <a href="../content/Masterthesis.tex" class="btn-dark">
+              <i class="fas fa-file-download"></i>
+              Download tex file
+            </a>
+          </div>
+          <div class="item">
+            <a href="../content/Graduate Algebra II script.pdf">
+              <img src="../images/li.png" alt="Opricer" />
+            </a>
+            <a href="../content/Graduate Algebra II script.pdf" class="btn-light">
+              <i class="fas fa-file-pdf"></i>
+              Lecture Notes on Commutative Algebra
+            </a>
+            <a href="../content/Graduate Algebra II script.tex" class="btn-dark">
+              <i class="fas fa-file-download"></i>
+              Down tex file
+            </a>
+          </div>
+        </div>
       </div>
     </main>
+    <footer id="main-footer">
+        Copyright &copy; 2019 Zhicheng Han &#9675; Photo taken in HIM Bonn, Oct 2016
+    </footer>
     <script src="../js/main.js"></script>
   </body>
 </html>
