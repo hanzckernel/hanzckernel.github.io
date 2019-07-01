@@ -58,12 +58,16 @@ a {
 
 header {
   position: fixed;
-  z-index: 2;
+  z-index: $front-index + 2;
   width: 100%;
 }
 
 .text-secondary {
   color: $secondary-color;
+}
+
+.text-tertiary {
+  color: $tertiary-color;
 }
 
 main {
@@ -80,11 +84,7 @@ main {
 
     a {
       padding: 0.6rem;
-
-      &:hover {
-        color: $secondary-color;
-        @include easeOut(true, 1.2);
-      }
+      @include hyperlink($secondary-color);
     }
   }
 
@@ -92,6 +92,17 @@ main {
     overflow: hidden;
     h1 {
       margin-top: 20vh;
+    }
+  }
+
+  // header color except the main
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    &.text-secondary {
+      color: adjust-hue($secondary-color, -30deg);
     }
   }
 }
@@ -117,12 +128,9 @@ main {
   .bio {
     grid-area: bio;
     a {
+      display: inline-block;
       color: $secondary-color;
-      &:hover {
-        color: lighten($secondary-color, 5);
-        @include easeOut(true);
-        transition: 0.3s;
-      }
+      @include hyperlink($tertiary-color);
     }
   }
 
@@ -186,7 +194,7 @@ main {
       background: lighten($secondary-color, 50);
       color: darken($secondary-color, 50);
       span {
-        color: $secondary-color;
+        color: $tertiary-color;
       }
     }
   }
@@ -215,13 +223,55 @@ main {
   background: lighten($primary-color, 25);
 }
 
+// Interest Page
+
+.interest {
+  display: flex;
+  flex-direction: column;
+  // margin: 5rem;
+
+  a {
+    color: $secondary-color;
+    @include hyperlink($tertiary-color);
+  }
+
+  .interest-sec {
+    margin: 1rem;
+    display: grid;
+    grid-gap: 0.7rem;
+    grid-template-areas: "box text text";
+    grid-template-columns: repeat(3, 1fr);
+
+    .fun-boxes {
+      grid-area: box;
+      width: 100%;
+      @include changePic;
+
+      img {
+        width: 280px;
+        height: auto;
+        object-fit: cover;
+        border: 3px $secondary-color solid;
+      }
+    }
+
+    .fun-text {
+      grid-area: text;
+
+      a {
+        display: inline-block;
+        @include hyperlink($tertiary-color);
+      }
+    }
+  }
+}
+
 #main-footer {
   text-align: center;
   padding: 1rem;
-  background: darken($color: $primary-color, $amount: 10);
+  background: darken($color: $primary-color, $amount: 2);
   color: setTextColor($primary-color);
   height: 50px;
 }
-
 // Here begins the media query
 @import "mobile";
