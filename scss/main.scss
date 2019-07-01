@@ -1,5 +1,6 @@
 @import "config";
 @import "menu";
+$all_headers: h3 dt h4 dd;
 
 html {
   // change list style
@@ -14,8 +15,16 @@ html {
     }
     > dd {
       flex-basis: 55%;
-      margin: 0;
+      margin: 0 0 1rem 0;
+
+      &.text-secondary {
+        margin: 0;
+      }
     }
+  }
+
+  p {
+    font-size: 1.2rem;
   }
 }
 
@@ -36,9 +45,11 @@ body {
 // Heading
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5 {
   margin: 0;
-  font-weight: 400;
+  font-weight: 600;
 
   &.lg-heading {
     font-size: 6rem;
@@ -50,6 +61,17 @@ h3 {
     background: rgba(lighten($primary-color, 1), 0.25);
   }
 }
+
+@each $header in $all_headers {
+  $i: index($all_headers, $header);
+  #{$header} {
+    &.text-secondary {
+      color: adjust-hue($secondary-color, $i * 15deg);
+    }
+  }
+}
+
+// header color except the h1
 
 a {
   color: white;
@@ -95,15 +117,8 @@ main {
     }
   }
 
-  // header color except the main
-
-  h2,
-  h3,
-  h4,
-  h5 {
-    &.text-secondary {
-      color: adjust-hue($secondary-color, -30deg);
-    }
+  progress {
+    color: red;
   }
 }
 
@@ -142,11 +157,11 @@ main {
 
   .job {
     background: lighten($primary-color, 5);
-    padding: 0.5rem;
+    padding: 0.5rem 0 0 1.5rem;
     border-top: $secondary-color 3px solid;
 
     &:hover {
-      background: darken($color: $primary-color, $amount: 5);
+      background: darken($color: $primary-color, $amount: 2);
       cursor: pointer;
       @include easeOut(true, 1);
     }
