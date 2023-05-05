@@ -15,16 +15,15 @@
 
     <title>Han's homepage</title>
   </head>
-
-  <body id="bg-img-index">
+  <body id="bg-img-index" onload="myFunction()">
     <header>
-      <div class="menu-btn">
+      <!-- <div class="menu-btn">
         <div class="btn-line"></div>
         <div class="btn-line"></div>
         <div class="btn-line"></div>
-      </div>
+      </div> -->
 
-      <nav class="menu">
+      <!-- <nav class="menu">
         <div class="menu-branding">
           <div class="portrait"></div>
         </div>
@@ -45,16 +44,14 @@
             <a href="pages/contact.html" class="nav-link">Contact Me</a>
           </li>
         </ul>
-      </nav>
+      </nav> -->
     </header>
-
-    <main id="home">
+    <div id="loader"></div>
+    <main id="home" style="display: none">
       <h1 class="lg-heading">
         Zhicheng <span class="text-secondary">Han</span>
       </h1>
-      <h2 class="sm-heading">
-        My Bigotry is Waiting to be Shattered
-      </h2>
+      <h2 class="sm-heading">A bull in many China shops</h2>
       <div class="icons">
         <a href="http://github.com/hanzckernel/"
           ><i class="fab fa-github fa-4x"></i
@@ -68,5 +65,17 @@
       </div>
     </main>
     <script src="js/main.js"></script>
+    <script>
+      var myVar;
+
+      function myFunction() {
+        myVar = setTimeout(showPage, 2000);
+      }
+
+      function showPage() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("home").style.display = "block";
+      }
+    </script>
   </body>
 </html>
