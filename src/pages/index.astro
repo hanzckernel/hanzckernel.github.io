@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Zhicheng Han | Personal Website">
+	<section class="h-[80vh] flex flex-col justify-center items-center text-center p-6 space-y-6">
+		<h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter drop-shadow-2xl">
+			Zhicheng Han
+		</h1>
+		<p class="text-xl md:text-2xl text-gray-300 max-w-2xl drop-shadow-lg leading-relaxed">
+			Web Developer & Mathematician. Crafting digital experiences with a touch of abstract logic.
+		</p>
+		<div class="flex space-x-4 pt-8">
+			<a 
+				href="/work" 
+				class="px-8 py-3 bg-white text-black font-bold uppercase tracking-widest text-sm hover:bg-blue-400 hover:text-white transition-all duration-300 transform hover:scale-105"
+			>
+				Explore Work
+			</a>
+			<a 
+				href="/gallery" 
+				class="px-8 py-3 border border-white text-white font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105"
+			>
+				The Gallery
+			</a>
+		</div>
+	</section>
+
+	<section class="py-24 max-w-4xl mx-auto space-y-12">
+		<div class="bg-black/30 backdrop-blur-xl p-12 border border-white/10 rounded-2xl shadow-2xl relative group overflow-hidden">
+			<div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+			<h2 class="text-3xl font-bold mb-6 border-b border-white/20 pb-4">
+				Abstract Logic meets Modern Web
+			</h2>
+			<p class="text-lg text-gray-300 leading-relaxed">
+				Combining the precision of academic mathematics with the creative freedom of front-end development. 
+				This site serves as a digital portfolio for my projects in both worlds—from responsive web applications 
+				to formal lecture notes in algebra.
+			</p>
+		</div>
+	</section>
+</BaseLayout>
