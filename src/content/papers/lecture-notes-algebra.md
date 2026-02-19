@@ -1,7 +1,7 @@
 ---
 title: Lecture Notes on Commutative Algebra
 description: Comprehensive lecture notes from my Graduate Algebra II course.
-image: /images/li.png
+image: /images/cards/algebra-chalk.svg
 pdfUrl: /content/Graduate Algebra II script.pdf
 texUrl: /content/Graduate Algebra II script.tex
 tags: [Mathematics, Commutative Algebra]

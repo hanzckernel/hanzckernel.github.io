@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.08"/>
+      <stop offset="100%" style="stop-color:transparent;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect width="800" height="600" fill="url(#glow)"/>
+  <!-- Commutative diagram -->
+  <g stroke="#e2e8f0" stroke-width="1" fill="none" opacity="0.2">
+    <line x1="250" y1="180" x2="450" y2="180"/>
+    <line x1="250" y1="180" x2="250" y2="380"/>
+    <line x1="450" y1="180" x2="450" y2="380"/>
+    <line x1="250" y1="380" x2="450" y2="380"/>
+    <!-- Arrows -->
+    <polygon points="445,175 455,180 445,185" fill="#e2e8f0" opacity="0.2"/>
+    <polygon points="245,375 250,385 255,375" fill="#e2e8f0" opacity="0.2"/>
+    <polygon points="445,375 455,380 445,385" fill="#e2e8f0" opacity="0.2"/>
+    <polygon points="245,245 250,255 255,245" fill="#e2e8f0" opacity="0.2"/>
+  </g>
+  <!-- Object labels -->
+  <g fill="#93c5fd" opacity="0.25" font-family="serif" font-style="italic" font-size="20">
+    <text x="225" y="170">A</text>
+    <text x="455" y="170">B</text>
+    <text x="225" y="400">C</text>
+    <text x="455" y="400">D</text>
+    <text x="340" y="170">f</text>
+    <text x="340" y="400">g</text>
+    <text x="225" y="290">h</text>
+    <text x="460" y="290">k</text>
+  </g>
+  <!-- Extra math -->
+  <g fill="#94a3b8" opacity="0.15" font-family="serif" font-size="16">
+    <text x="100" y="100">R[x]/(p(x)) ≅ K</text>
+    <text x="550" y="120">Hom(M,N)</text>
+    <text x="80" y="500">0 → A → B → C → 0</text>
+    <text x="500" y="480">Tor₁(M,N)</text>
+    <text x="600" y="300">Spec(R)</text>
+  </g>
+</svg>

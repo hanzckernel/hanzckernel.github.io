@@ -1,79 +1,414 @@
 ---
-import { ClientRouter } from 'astro:transitions';
-import BaseHead from '../components/BaseHead.astro';
-import { Search } from '../components/Search';
-import '../styles/global.css';
+import { ClientRouter } from "astro:transitions";
+import BaseHead from "../components/BaseHead.astro";
+import { Search } from "../components/Search";
+import "../styles/global.css";
 
 interface Props {
 	title?: string;
 	description?: string;
 	image?: string;
+	backgroundImage?: string;
+	overlayStrength?: string;
+	backgroundCaption?: string;
+	mobileBackgroundPosition?: string;
 }
 
-const { 
-    title = "Zhicheng Han | Personal Website", 
-    description = "Personal website of Zhicheng Han, featuring web projects and academic work in mathematics.",
-	image
+const {
+	title = "Zhicheng Han | Personal Website",
+	description = "Personal website of Zhicheng Han, featuring web projects and academic work in mathematics.",
+	image,
+	backgroundImage = "/images/index.jpg",
+	overlayStrength = "bg-black/60",
+	backgroundCaption,
+	mobileBackgroundPosition = "center",
 } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+	{ href: "/", label: "Home", match: (p: string) => p === "/" },
+	{ href: "/work", label: "Work", match: (p: string) => p.startsWith("/work") },
+	{ href: "/gallery", label: "Gallery", match: (p: string) => p.startsWith("/gallery") },
+	{ href: "/blog", label: "Blog", match: (p: string) => p.startsWith("/blog") },
+	{ href: "/about", label: "About", match: (p: string) => p.startsWith("/about") },
+	{ href: "/contact", label: "Contact", match: (p: string) => p.startsWith("/contact") },
+];
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} image={image} />
 		<ClientRouter />
 	</head>
-	<body class="bg-gray-900 text-white min-h-screen relative overflow-x-hidden">
-		<!-- The "Swan" Background -->
-		<div 
-			class="fixed inset-0 z-[-1] bg-cover bg-center bg-no-repeat grayscale-[0.2]"
-			style="background-image: url('/images/index.jpg');"
+	<body
+		class="bg-gray-900 text-white min-h-screen relative overflow-x-hidden font-sans"
+	>
+		<!-- Per-page Background with View Transition -->
+		<div
+			class="fixed inset-0 z-[-1] bg-cover bg-no-repeat grayscale-[0.2] mobile-bg"
+			style={`background-image: url('${backgroundImage}'); background-position: center; --mobile-bg-pos: ${mobileBackgroundPosition};`}
+			transition:name="page-bg"
+			transition:animate="fade"
 		>
-            <!-- Overlay for Grainy Glassmorphism -->
-            <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
-        </div>
+			<!-- Dark overlay for content readability -->
+			<div
+				class={`absolute inset-0 ${overlayStrength} backdrop-blur-[6px]`}
+			>
+			</div>
+		</div>
+
+		<!-- Background photo caption pill — mobile-optimized with larger touch target -->
+		{backgroundCaption && (
+			<a
+				href="/photos"
+				class="fixed bottom-4 right-4 md:bottom-5 md:right-5 z-50 group flex items-center gap-2 bg-black/50 backdrop-blur-md border border-white/10 rounded-full px-3 py-2 md:px-3 md:py-1.5 text-[10px] text-gray-400 hover:text-white hover:border-white/30 transition-all duration-300 cursor-pointer min-w-[44px] min-h-[44px] justify-center"
+				title="View all photos"
+			>
+				<!-- Camera icon -->
+				<svg class="w-4 h-4 md:w-3 md:h-3 shrink-0 text-gray-400 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+				</svg>
+				<span class="hidden md:inline max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap">{backgroundCaption}</span>
+			</a>
+		)}
 
 		<div class="relative z-10 flex flex-col min-h-screen">
-			<header class="p-6 border-b border-white/10 backdrop-blur-md sticky top-0 z-[60]">
-				<nav class="max-w-6xl mx-auto flex justify-between items-center">
-					<a href="/" class="text-2xl font-bold tracking-tighter">ZH</a>
-					<div class="flex items-center space-x-8">
-						<ul class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
-							<li><a href="/" class="hover:text-blue-400 transition-colors">Home</a></li>
-							<li><a href="/work" class="hover:text-blue-400 transition-colors">Work</a></li>
-							<li><a href="/gallery" class="hover:text-blue-400 transition-colors">Gallery</a></li>
-							<li><a href="/interests" class="hover:text-blue-400 transition-colors">Interests</a></li>
-							<li><a href="/about" class="hover:text-blue-400 transition-colors">About</a></li>
-							<li><a href="/contact" class="hover:text-blue-400 transition-colors">Contact</a></li>
+			<header
+				class="px-4 py-3 md:p-6 border-b border-white/10 backdrop-blur-md sticky top-0 z-[60]"
+			>
+				<nav
+					class="max-w-6xl mx-auto flex justify-between items-center"
+				>
+					<a
+						href="/"
+						class="text-2xl font-bold tracking-tighter hover:text-blue-400 transition-colors"
+						>ZH</a
+					>
+					<div class="flex items-center gap-3 md:gap-8">
+						<ul
+							class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest"
+						>
+							{navItems.map(item => (
+								<li>
+									<a
+										href={item.href}
+										class:list={[
+											"transition-colors",
+											item.match(currentPath)
+												? "text-blue-400"
+												: "hover:text-blue-400",
+										]}>{item.label}</a>
+								</li>
+							))}
 						</ul>
 						<Search client:load />
+						<!-- Mobile hamburger — 44px min touch target -->
+						<button
+							id="mobile-menu-toggle"
+							class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+							aria-label="Toggle menu"
+							aria-expanded="false"
+						>
+							<div class="hamburger-icon w-5 h-5 relative">
+								<span class="hamburger-bar absolute left-0 right-0 h-[2px] bg-white rounded-full transition-all duration-300 top-[3px]"></span>
+								<span class="hamburger-bar absolute left-0 right-0 h-[2px] bg-white rounded-full transition-all duration-300 top-[9px]"></span>
+								<span class="hamburger-bar absolute left-0 right-0 h-[2px] bg-white rounded-full transition-all duration-300 top-[15px]"></span>
+							</div>
+						</button>
 					</div>
 				</nav>
 			</header>
 
-			<main class="flex-grow max-w-6xl mx-auto w-full p-6">
+			<!-- Fullscreen Mobile Menu Overlay -->
+			<div
+				id="mobile-menu"
+				class="fixed inset-0 z-[100] md:hidden pointer-events-none"
+				aria-hidden="true"
+			>
+				<!-- Backdrop -->
+				<div id="mobile-menu-backdrop" class="absolute inset-0 bg-black/80 backdrop-blur-xl opacity-0 transition-opacity duration-300"></div>
+
+				<!-- Menu Panel — slides up from bottom -->
+				<div id="mobile-menu-panel" class="absolute inset-x-0 bottom-0 bg-gray-900/95 backdrop-blur-2xl border-t border-white/10 rounded-t-3xl translate-y-full transition-transform duration-400 ease-out max-h-[85vh] overflow-y-auto">
+					<!-- Drag indicator -->
+					<div class="flex justify-center pt-3 pb-2">
+						<div class="w-10 h-1 bg-white/20 rounded-full"></div>
+					</div>
+
+					<!-- Nav links -->
+					<nav class="px-6 pt-4 pb-8" aria-label="Mobile navigation">
+						<ul class="space-y-1">
+							{navItems.map(item => (
+								<li>
+									<a
+										href={item.href}
+										class:list={[
+											"mobile-nav-link flex items-center px-4 py-4 text-lg font-medium tracking-wide rounded-2xl transition-all duration-200",
+											item.match(currentPath)
+												? "text-blue-400 bg-blue-500/10"
+												: "text-gray-200 hover:bg-white/5 active:bg-white/10",
+										]}
+									>
+										{item.label}
+										{item.match(currentPath) && (
+											<span class="ml-auto w-2 h-2 bg-blue-400 rounded-full"></span>
+										)}
+									</a>
+								</li>
+							))}
+						</ul>
+
+						<!-- Quick links -->
+						<div class="mt-8 pt-6 border-t border-white/10">
+							<div class="flex gap-4 justify-center">
+								<a
+									href="https://github.com/hanzckernel"
+									target="_blank"
+									class="flex items-center justify-center w-12 h-12 rounded-2xl bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors"
+									aria-label="GitHub"
+								>
+									<svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+								</a>
+								<a
+									href="mailto:hanzc.kernel@gmail.com"
+									class="flex items-center justify-center w-12 h-12 rounded-2xl bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors"
+									aria-label="Email"
+								>
+									<svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+								</a>
+								<a
+									href="/photos"
+									class="flex items-center justify-center w-12 h-12 rounded-2xl bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors"
+									aria-label="Photos"
+								>
+									<svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+									</svg>
+								</a>
+							</div>
+						</div>
+					</nav>
+
+					<!-- Safe area spacer for iOS -->
+					<div class="h-safe-bottom"></div>
+				</div>
+			</div>
+
+			<main class="flex-grow max-w-6xl mx-auto w-full px-4 py-6 md:p-6">
 				<slot />
 			</main>
 
-			<footer class="p-6 border-t border-white/10 backdrop-blur-md text-center text-sm text-gray-400">
-				&copy; {new Date().getFullYear()} Zhicheng Han. Built with Astro & Tailwind.
+			<footer class="border-t border-white/10 backdrop-blur-md">
+				<div class="max-w-6xl mx-auto px-4 py-6 md:p-8 md:py-12">
+					<div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8">
+						<!-- Brand -->
+						<div class="space-y-3 col-span-2 md:col-span-1">
+							<a
+								href="/"
+								class="text-2xl font-bold tracking-tighter"
+								>ZH</a
+							>
+							<p class="text-sm text-gray-500 leading-relaxed">
+								Mathematician & Developer based in Göttingen,
+								Germany.
+							</p>
+						</div>
+
+						<!-- Navigation -->
+						<div class="space-y-3">
+							<h4
+								class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500"
+							>
+								Navigation
+							</h4>
+							<ul class="space-y-2 text-sm text-gray-400">
+								<li>
+									<a
+										href="/work"
+										class="hover:text-white transition-colors"
+										>Work</a
+									>
+								</li>
+								<li>
+									<a
+										href="/gallery"
+										class="hover:text-white transition-colors"
+										>Gallery</a
+									>
+								</li>
+								<li>
+									<a
+										href="/blog"
+										class="hover:text-white transition-colors"
+										>Blog</a
+									>
+								</li>
+								<li>
+									<a
+										href="/about"
+										class="hover:text-white transition-colors"
+										>About</a
+									>
+								</li>
+							</ul>
+						</div>
+
+						<!-- Social -->
+						<div class="space-y-3">
+							<h4
+								class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500"
+							>
+								Connect
+							</h4>
+							<ul class="space-y-2 text-sm text-gray-400">
+								<li>
+									<a
+										href="https://github.com/hanzckernel"
+										target="_blank"
+										class="hover:text-white transition-colors inline-flex items-center gap-2"
+									>
+										<svg
+											class="w-4 h-4"
+											fill="currentColor"
+											viewBox="0 0 24 24"
+											><path
+												d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+											></path>
+										</svg>
+										GitHub
+									</a>
+								</li>
+								<li>
+									<a
+										href="mailto:hanzc.kernel@gmail.com"
+										class="hover:text-white transition-colors inline-flex items-center gap-2"
+									>
+										<svg
+											class="w-4 h-4"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+											><path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+											></path>
+										</svg>
+										Email
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div
+						class="border-t border-white/5 pt-4 md:pt-6 text-center text-xs text-gray-600"
+					>
+						&copy; {new Date().getFullYear()} Zhicheng Han. Built with
+						Astro & Tailwind.
+					</div>
+				</div>
+				<!-- iOS safe area spacer -->
+				<div class="h-safe-bottom"></div>
 			</footer>
 		</div>
 	</body>
 </html>
 
-<style is:global>
-    /* Grainy effect */
-    body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0.05;
-        z-index: 1000;
-        pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
+<script>
+	// Mobile menu — fullscreen overlay
+	document.addEventListener("astro:page-load", () => {
+		const toggle = document.getElementById("mobile-menu-toggle");
+		const menu = document.getElementById("mobile-menu");
+		const backdrop = document.getElementById("mobile-menu-backdrop");
+		const panel = document.getElementById("mobile-menu-panel");
+		const bars = toggle?.querySelectorAll(".hamburger-bar");
+		let isOpen = false;
+
+		function openMenu() {
+			isOpen = true;
+			menu?.classList.remove("pointer-events-none");
+			menu?.setAttribute("aria-hidden", "false");
+			toggle?.setAttribute("aria-expanded", "true");
+			backdrop?.classList.remove("opacity-0");
+			backdrop?.classList.add("opacity-100");
+			panel?.classList.remove("translate-y-full");
+			panel?.classList.add("translate-y-0");
+			document.body.style.overflow = "hidden";
+
+			// Animate hamburger → ×
+			if (bars && bars.length === 3) {
+				(bars[0] as HTMLElement).style.transform = "translateY(6px) rotate(45deg)";
+				(bars[1] as HTMLElement).style.opacity = "0";
+				(bars[2] as HTMLElement).style.transform = "translateY(-6px) rotate(-45deg)";
+			}
+		}
+
+		function closeMenu() {
+			isOpen = false;
+			menu?.setAttribute("aria-hidden", "true");
+			toggle?.setAttribute("aria-expanded", "false");
+			backdrop?.classList.add("opacity-0");
+			backdrop?.classList.remove("opacity-100");
+			panel?.classList.add("translate-y-full");
+			panel?.classList.remove("translate-y-0");
+			document.body.style.overflow = "";
+
+			// Animate × → hamburger
+			if (bars && bars.length === 3) {
+				(bars[0] as HTMLElement).style.transform = "";
+				(bars[1] as HTMLElement).style.opacity = "1";
+				(bars[2] as HTMLElement).style.transform = "";
+			}
+
+			// Re-enable pointer events after transition
+			setTimeout(() => {
+				if (!isOpen) menu?.classList.add("pointer-events-none");
+			}, 350);
+		}
+
+		toggle?.addEventListener("click", () => {
+			isOpen ? closeMenu() : openMenu();
+		});
+
+		// Close on backdrop tap
+		backdrop?.addEventListener("click", closeMenu);
+
+		// Close on nav link tap
+		const navLinks = menu?.querySelectorAll(".mobile-nav-link");
+		navLinks?.forEach(link => link.addEventListener("click", closeMenu));
+
+		// Close on escape
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape" && isOpen) closeMenu();
+		});
+	});
+</script>
+
+<style>
+	/* Mobile background position */
+	@media (max-width: 768px) {
+		.mobile-bg {
+			background-position: var(--mobile-bg-pos, center) !important;
+		}
+	}
+
+	/* iOS safe area bottom spacer */
+	.h-safe-bottom {
+		height: env(safe-area-inset-bottom, 0px);
+	}
+
+	/* Menu panel transition tuning */
+	#mobile-menu-panel {
+		transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+	}
+
+	#mobile-menu-backdrop {
+		transition: opacity 0.3s ease;
+	}
 </style>

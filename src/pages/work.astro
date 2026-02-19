@@ -1,28 +1,41 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { ArcadeCard } from '../components/ArcadeCard';
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { ArcadeCard } from "../components/ArcadeCard";
 
-const projects = await getCollection('projects');
+const projects = await getCollection("projects");
 ---
 
-<BaseLayout title="My Work | Zhicheng Han" description="A showcase of my web development and coding projects.">
+<BaseLayout
+	title="My Work | Zhicheng Han"
+	description="A showcase of my web development and coding projects."
+	backgroundImage="/images/work.jpg"
+	backgroundCaption="Chalkboard, Harmonic Analysis lecture — Bonn 2018"
+	mobileBackgroundPosition="40% center"
+>
 	<section class="py-12">
-		<h1 class="text-5xl font-extrabold tracking-tighter mb-4 leading-none">The <span class="text-blue-400">Arcade</span></h1>
-		<p class="text-xl text-gray-400 mb-12 max-w-2xl leading-relaxed">Interactive web experiments and applications. Click "Launch Arcade" to experience them directly.</p>
+		<h1 class="text-5xl font-extrabold tracking-tighter mb-4 leading-none">
+			The <span class="text-blue-400">Arcade</span>
+		</h1>
+		<p class="text-xl text-gray-400 mb-12 max-w-2xl leading-relaxed">
+			Interactive web experiments and applications. Click "Launch Arcade"
+			to experience them directly.
+		</p>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-			{projects.map((project) => (
-				<ArcadeCard 
-                    client:load
-                    title={project.data.title}
-                    description={project.data.description}
-                    image={project.data.image || '/images/index.jpg'}
-                    url={project.data.url || '#'}
-                    github={project.data.github}
-                    tags={project.data.tags}
-                />
-			))}
+			{
+				projects.map((project) => (
+					<ArcadeCard
+						client:load
+						title={project.data.title}
+						description={project.data.description}
+						image={project.data.image || "/images/index.jpg"}
+						url={project.data.url || "#"}
+						github={project.data.github}
+						tags={project.data.tags}
+					/>
+				))
+			}
 		</div>
 	</section>
 </BaseLayout>

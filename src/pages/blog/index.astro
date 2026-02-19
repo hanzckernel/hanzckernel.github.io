@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BlogCard from "../../components/BlogCard.astro";
+
+const posts = await getCollection("blog");
+const sortedPosts = posts.sort(
+    (a, b) =>
+        new Date(b.data.publishDate).getTime() -
+        new Date(a.data.publishDate).getTime()
+);
+---
+
+<BaseLayout
+    title="Blog | Zhicheng Han"
+    description="Thoughts on mathematics, programming, and the intersection of the two."
+    backgroundImage="/images/contact.jpg"
+    backgroundCaption="Frosty morning path, Göttingen — Winter 2023"
+>
+    <section class="py-12">
+        <h1
+            class="text-5xl md:text-7xl font-extrabold tracking-tighter mb-4 leading-none"
+        >
+            The <span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"
+                >Blog</span
+            >
+        </h1>
+        <p class="text-xl text-gray-400 mb-12 max-w-2xl leading-relaxed">
+            Writing about mathematics, web development, and everything in
+            between.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
+            {sortedPosts.map((post) => <BlogCard post={post} />)}
+        </div>
+    </section>
+</BaseLayout>

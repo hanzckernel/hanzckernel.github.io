@@ -1,42 +1,360 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BlogCard from "../components/BlogCard.astro";
+
+const projects = await getCollection("projects");
+const posts = await getCollection("blog");
+const latestPosts = posts
+	.sort(
+		(a, b) =>
+			new Date(b.data.publishDate).getTime() -
+			new Date(a.data.publishDate).getTime()
+	)
+	.slice(0, 3);
 ---
 
-<BaseLayout title="Zhicheng Han | Personal Website">
-	<section class="h-[80vh] flex flex-col justify-center items-center text-center p-6 space-y-6">
-		<h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter drop-shadow-2xl">
-			Zhicheng Han
-		</h1>
-		<p class="text-xl md:text-2xl text-gray-300 max-w-2xl drop-shadow-lg leading-relaxed">
-			Web Developer & Mathematician. Crafting digital experiences with a touch of abstract logic.
-		</p>
-		<div class="flex space-x-4 pt-8">
-			<a 
-				href="/work" 
-				class="px-8 py-3 bg-white text-black font-bold uppercase tracking-widest text-sm hover:bg-blue-400 hover:text-white transition-all duration-300 transform hover:scale-105"
+<BaseLayout
+	title="Zhicheng Han | Personal Website"
+	overlayStrength="bg-black/40"
+	backgroundCaption="Swan on the Rheinaue, Bonn — Winter 2020"
+	mobileBackgroundPosition="60% center"
+>
+	<!-- Hero Section -->
+	<section
+		class="min-h-[85vh] flex flex-col justify-center items-center text-center p-6 space-y-8 relative"
+	>
+		<div class="relative z-10 space-y-6">
+			<p
+				class="text-sm font-bold uppercase tracking-[0.3em] text-blue-400/80 animate-fade-in-up"
 			>
-				Explore Work
+				Mathematician · Developer · Creator
+			</p>
+			<h1
+				class="text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter drop-shadow-2xl animate-fade-in-up"
+				style="animation-delay: 0.1s;"
+			>
+				<span
+					class="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-gray-400"
+					>Zhicheng</span
+				>
+				<br />
+				<span
+					class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-300 to-purple-400"
+					>Han</span
+				>
+			</h1>
+			<p
+				class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto drop-shadow-lg leading-relaxed animate-fade-in-up"
+				style="animation-delay: 0.2s;"
+			>
+				Crafting digital experiences with the precision of abstract
+				mathematics and the creative freedom of modern web development.
+			</p>
+			<div
+				class="flex flex-wrap justify-center gap-4 pt-6 animate-fade-in-up"
+				style="animation-delay: 0.3s;"
+			>
+				<a
+					href="/work"
+					class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold uppercase tracking-widest text-sm rounded-lg hover:from-blue-400 hover:to-blue-500 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)]"
+				>
+					Explore Work
+				</a>
+				<a
+					href="/gallery"
+					class="px-8 py-3 border border-white/20 text-white font-bold uppercase tracking-widest text-sm rounded-lg hover:bg-white/10 hover:border-white/40 transition-all duration-300 transform hover:scale-105"
+				>
+					The Gallery
+				</a>
+				<a
+					href="/blog"
+					class="px-8 py-3 border border-blue-500/20 text-blue-400 font-bold uppercase tracking-widest text-sm rounded-lg hover:bg-blue-500/10 hover:border-blue-500/40 transition-all duration-300 transform hover:scale-105"
+				>
+					Read Blog
+				</a>
+			</div>
+		</div>
+
+		<!-- Scroll indicator -->
+		<div class="absolute bottom-8 animate-bounce opacity-40">
+			<svg
+				class="w-6 h-6"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+			</svg>
+		</div>
+	</section>
+
+	<!-- About Teaser Section -->
+	<section class="py-20 max-w-5xl mx-auto px-6">
+		<div
+			class="bg-black/50 backdrop-blur-xl p-10 md:p-14 border border-white/10 rounded-2xl shadow-2xl relative group overflow-hidden animate-on-scroll"
+		>
+			<div
+				class="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+			>
+			</div>
+			<div
+				class="relative z-10 grid grid-cols-1 md:grid-cols-[auto_1fr] gap-10 items-center"
+			>
+				<div
+					class="w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden border border-white/10 mx-auto md:mx-0 shrink-0"
+				>
+					<img
+						src="/images/about-me.jpeg"
+						alt="Zhicheng Han"
+						class="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700"
+					/>
+				</div>
+				<div class="space-y-4 text-center md:text-left">
+					<h2 class="text-3xl md:text-4xl font-bold tracking-tight">
+						Abstract Logic meets <span
+							class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"
+							>Modern Web</span
+						>
+					</h2>
+					<p class="text-gray-400 leading-relaxed max-w-2xl">
+						From Jingdezhen to Singapore to Bonn to Göttingen — I've
+						been on a journey blending the precision of academic
+						mathematics with the creative freedom of front-end
+						development. Currently pursuing a PhD in Mathematics at
+						the University of Göttingen.
+					</p>
+					<a
+						href="/about"
+						class="inline-flex items-center text-sm text-blue-400 hover:text-white transition-colors group/link"
+					>
+						Learn more about me
+						<span
+							class="ml-2 group-hover/link:translate-x-1 transition-transform"
+							>→</span
+						>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Featured Projects Section -->
+	<section class="py-16 max-w-5xl mx-auto px-6">
+		<div class="flex items-end justify-between mb-10">
+			<div>
+				<p
+					class="text-[10px] font-bold uppercase tracking-[0.3em] text-blue-400/60 mb-2"
+				>
+					Showcase
+				</p>
+				<h2
+					class="text-3xl md:text-4xl font-extrabold tracking-tighter"
+				>
+					Featured <span
+						class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400"
+						>Projects</span
+					>
+				</h2>
+			</div>
+			<a
+				href="/work"
+				class="hidden md:inline-flex items-center text-sm text-gray-500 hover:text-blue-400 transition-colors group"
+			>
+				View all
+				<span
+					class="ml-1 group-hover:translate-x-1 transition-transform"
+					>→</span
+				>
 			</a>
-			<a 
-				href="/gallery" 
-				class="px-8 py-3 border border-white text-white font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105"
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+			{
+				projects.map((project) => (
+					<div class="relative rounded-2xl border border-white/10 bg-black/50 backdrop-blur-xl overflow-hidden group transition-all duration-500 hover:border-blue-500/30 hover:shadow-[0_0_40px_rgba(59,130,246,0.08)] animate-on-scroll">
+						<div class="aspect-video relative overflow-hidden">
+							<img
+								src={project.data.image || "/images/index.jpg"}
+								alt={project.data.title}
+								class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+							/>
+							<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+						</div>
+						<div class="p-6 space-y-3">
+							<div class="flex flex-wrap gap-2">
+								{project.data.tags.map((tag: string) => (
+									<span class="text-[9px] uppercase tracking-[0.15em] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">
+										{tag}
+									</span>
+								))}
+							</div>
+							<h3 class="text-xl font-bold tracking-tight group-hover:text-blue-400 transition-colors">
+								{project.data.title}
+							</h3>
+							<p class="text-gray-400 text-sm leading-relaxed line-clamp-2">
+								{project.data.description}
+							</p>
+							<div class="flex gap-4 pt-2">
+								{project.data.url && (
+									<a
+										href={project.data.url}
+										target="_blank"
+										class="text-[10px] font-bold uppercase tracking-widest text-blue-400 hover:text-white transition-colors"
+									>
+										View Live →
+									</a>
+								)}
+								{project.data.github && (
+									<a
+										href={project.data.github}
+										target="_blank"
+										class="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-white transition-colors"
+									>
+										Source
+									</a>
+								)}
+							</div>
+						</div>
+					</div>
+				))
+			}
+		</div>
+
+		<div class="md:hidden mt-6 text-center">
+			<a
+				href="/work"
+				class="inline-flex items-center text-sm text-gray-500 hover:text-blue-400 transition-colors"
 			>
-				The Gallery
+				View all projects →
 			</a>
 		</div>
 	</section>
 
-	<section class="py-24 max-w-4xl mx-auto space-y-12">
-		<div class="bg-black/30 backdrop-blur-xl p-12 border border-white/10 rounded-2xl shadow-2xl relative group overflow-hidden">
-			<div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-			<h2 class="text-3xl font-bold mb-6 border-b border-white/20 pb-4">
-				Abstract Logic meets Modern Web
-			</h2>
-			<p class="text-lg text-gray-300 leading-relaxed">
-				Combining the precision of academic mathematics with the creative freedom of front-end development. 
-				This site serves as a digital portfolio for my projects in both worlds—from responsive web applications 
-				to formal lecture notes in algebra.
-			</p>
+	<!-- Latest Blog Posts Section -->
+	<section class="py-16 max-w-5xl mx-auto px-6">
+		<div class="flex items-end justify-between mb-10">
+			<div>
+				<p
+					class="text-[10px] font-bold uppercase tracking-[0.3em] text-blue-400/60 mb-2"
+				>
+					Writing
+				</p>
+				<h2
+					class="text-3xl md:text-4xl font-extrabold tracking-tighter"
+				>
+					Latest <span
+						class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"
+						>Posts</span
+					>
+				</h2>
+			</div>
+			<a
+				href="/blog"
+				class="hidden md:inline-flex items-center text-sm text-gray-500 hover:text-blue-400 transition-colors group"
+			>
+				All posts
+				<span
+					class="ml-1 group-hover:translate-x-1 transition-transform"
+					>→</span
+				>
+			</a>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+			{latestPosts.map((post) => <BlogCard post={post} />)}
+		</div>
+
+		<div class="md:hidden mt-6 text-center">
+			<a
+				href="/blog"
+				class="inline-flex items-center text-sm text-gray-500 hover:text-blue-400 transition-colors"
+			>
+				View all posts →
+			</a>
+		</div>
+	</section>
+
+	<!-- Bottom CTA Section -->
+	<section class="py-20 max-w-4xl mx-auto px-6 text-center">
+		<div
+			class="bg-gradient-to-br from-blue-500/10 via-black/50 to-purple-500/10 backdrop-blur-xl p-12 md:p-16 border border-white/10 rounded-3xl relative overflow-hidden"
+		>
+			<div
+				class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"
+			>
+			</div>
+			<div class="relative z-10 space-y-6">
+				<h2
+					class="text-3xl md:text-4xl font-extrabold tracking-tighter"
+				>
+					Let's <span
+						class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"
+						>Connect</span
+					>
+				</h2>
+				<p
+					class="text-gray-400 text-lg max-w-xl mx-auto leading-relaxed"
+				>
+					Interested in collaborating on a project, discussing
+					mathematics, or just saying hello?
+				</p>
+				<div class="flex flex-wrap justify-center gap-4 pt-4">
+					<a
+						href="/contact"
+						class="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold uppercase tracking-widest text-sm rounded-lg hover:from-blue-400 hover:to-purple-400 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_30px_rgba(139,92,246,0.3)]"
+					>
+						Get in Touch
+					</a>
+					<a
+						href="https://github.com/hanzckernel"
+						target="_blank"
+						class="px-8 py-3 border border-white/20 text-white font-bold uppercase tracking-widest text-sm rounded-lg hover:bg-white/10 hover:border-white/40 transition-all duration-300 transform hover:scale-105"
+					>
+						GitHub
+					</a>
+				</div>
+			</div>
 		</div>
 	</section>
 </BaseLayout>
+
+<style>
+	@keyframes fade-in-up {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.animate-fade-in-up {
+		animation: fade-in-up 0.8s ease-out both;
+	}
+</style>
+
+<script>
+	// Intersection Observer for scroll-triggered animations
+	const observer = new IntersectionObserver(
+		(entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add("is-visible");
+					observer.unobserve(entry.target);
+				}
+			});
+		},
+		{ threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+	);
+
+	document.querySelectorAll(".animate-on-scroll").forEach((el) => {
+		observer.observe(el);
+	});
+</script>

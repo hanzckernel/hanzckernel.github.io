@@ -1,0 +1,282 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BlogToc from "../../components/BlogToc.astro";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("blog");
+    return posts.map((post) => ({
+        params: { slug: post.id.replace(/\.md$/, "") },
+        props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+// Fetch all posts for the sidebar list
+const allPosts = await getCollection("blog");
+const sortedPosts = allPosts.sort(
+    (a, b) =>
+        new Date(b.data.publishDate).getTime() -
+        new Date(a.data.publishDate).getTime()
+);
+
+const currentSlug = post.id.replace(/\.md$/, "");
+
+const formattedDate = new Date(post.data.publishDate).toLocaleDateString(
+    "en-US",
+    {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    }
+);
+---
+
+<BaseLayout
+    title={`${post.data.title} | Zhicheng Han`}
+    description={post.data.description}
+    backgroundImage="/images/contact.jpg"
+    backgroundCaption="Frosty morning path, Göttingen — Winter 2023"
+>
+    <!-- Back link (mobile only) -->
+    <a
+        href="/blog"
+        class="inline-flex items-center text-sm text-gray-300 hover:text-blue-400 transition-colors mb-4 md:mb-6 group md:hidden py-2"
+    >
+        <span class="mr-2 group-hover:-translate-x-1 transition-transform">←</span>
+        Back to Blog
+    </a>
+
+    <!-- 3-column docs layout -->
+    <div class="flex gap-8 py-4 md:py-8 relative">
+
+        <!-- LEFT SIDEBAR: Post list -->
+        <aside class="hidden lg:block w-52 shrink-0">
+            <div class="sticky top-24">
+                <a
+                    href="/blog"
+                    class="inline-flex items-center text-xs text-gray-300 hover:text-blue-400 transition-colors mb-6 group"
+                >
+                    <span class="mr-1.5 group-hover:-translate-x-1 transition-transform">←</span>
+                    All Posts
+                </a>
+
+                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-3">
+                    Posts
+                </p>
+                <nav aria-label="All blog posts">
+                    <ul class="space-y-1">
+                        {sortedPosts.map((p) => {
+                            const slug = p.id.replace(/\.md$/, "");
+                            const isActive = slug === currentSlug;
+                            return (
+                                <li>
+                                    <a
+                                        href={`/blog/${slug}`}
+                                        class:list={[
+                                            "block text-sm py-1.5 px-2 rounded-lg transition-all duration-200 leading-snug",
+                                            isActive
+                                                ? "text-blue-400 bg-blue-500/10 font-semibold"
+                                                : "text-gray-400 hover:text-white hover:bg-white/5",
+                                        ]}
+                                    >
+                                        {p.data.title}
+                                    </a>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- CENTER: Article -->
+        <article class="min-w-0 flex-1 max-w-2xl">
+            <!-- Header -->
+            <header class="mb-8 md:mb-10">
+                <time
+                    class="inline-block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-200 mb-3 md:mb-4 bg-white/10 px-3 py-1 rounded-full"
+                >
+                    {formattedDate}
+                </time>
+                <h1
+                    class="text-3xl md:text-5xl font-extrabold tracking-tighter leading-tight mb-4 md:mb-6"
+                >
+                    {post.data.title}
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
+                    {post.data.description}
+                </p>
+                <div class="flex flex-wrap gap-2 mt-4 md:mt-6">
+                    {
+                        post.data.tags.map((tag: string) => (
+                            <span class="text-[9px] uppercase tracking-[0.15em] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">
+                                {tag}
+                            </span>
+                        ))
+                    }
+                </div>
+            </header>
+
+            <div class="border-t border-white/10 mb-8 md:mb-10"></div>
+
+            <!-- Content -->
+            <div
+                id="article-content"
+                class="prose prose-invert prose-base md:prose-lg max-w-none
+                    prose-headings:font-bold prose-headings:tracking-tight
+                    prose-h2:text-xl md:prose-h2:text-2xl prose-h2:mt-10 md:prose-h2:mt-12 prose-h2:mb-4
+                    prose-h3:text-lg md:prose-h3:text-xl prose-h3:mt-6 md:prose-h3:mt-8 prose-h3:mb-3
+                    prose-p:text-gray-300 prose-p:leading-relaxed
+                    prose-a:text-blue-400 prose-a:no-underline hover:prose-a:text-blue-300
+                    prose-strong:text-white
+                    prose-code:text-blue-300 prose-code:bg-blue-500/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-['']
+                    prose-pre:bg-black/40 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-xl
+                    prose-blockquote:border-blue-500/50
+                    prose-li:text-gray-300
+                    prose-table:border-white/10 prose-th:text-left prose-th:text-gray-300 prose-th:border-white/10 prose-td:border-white/10 prose-td:text-gray-400"
+            >
+                <Content />
+            </div>
+
+            <!-- Footer nav -->
+            <div class="border-t border-white/10 mt-12 md:mt-16 pt-6 md:pt-8">
+                <a
+                    href="/blog"
+                    class="inline-flex items-center text-sm text-gray-300 hover:text-blue-400 transition-colors group py-2"
+                >
+                    <span class="mr-2 group-hover:-translate-x-1 transition-transform">←</span>
+                    All Posts
+                </a>
+            </div>
+        </article>
+
+        <!-- RIGHT SIDEBAR: Table of Contents (desktop) -->
+        <aside class="hidden xl:block w-44 shrink-0">
+            <div class="sticky top-24">
+                <BlogToc />
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- MOBILE: Floating ToC button + slide-up drawer -->
+    <button
+        id="mobile-toc-toggle"
+        class="xl:hidden fixed bottom-20 right-4 z-[90] bg-blue-500/90 backdrop-blur-md text-white rounded-full px-4 py-3 text-xs font-medium shadow-lg shadow-blue-500/20 hover:bg-blue-500 active:scale-95 transition-all duration-200 flex items-center gap-2 min-w-[44px] min-h-[44px]"
+        aria-label="Open table of contents"
+        aria-expanded="false"
+    >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h14"/>
+        </svg>
+        <span class="hidden sm:inline">Contents</span>
+    </button>
+
+    <!-- Mobile ToC Drawer -->
+    <div
+        id="mobile-toc-drawer"
+        class="xl:hidden fixed inset-0 z-[95] pointer-events-none"
+        aria-hidden="true"
+    >
+        <!-- Backdrop -->
+        <div id="mobile-toc-backdrop" class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+
+        <!-- Drawer panel -->
+        <div id="mobile-toc-panel" class="absolute inset-x-0 bottom-0 bg-gray-900/95 backdrop-blur-2xl border-t border-white/10 rounded-t-3xl translate-y-full transition-transform duration-350 max-h-[60vh] overflow-y-auto"
+             style="transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);">
+            <!-- Drag indicator -->
+            <div class="flex justify-center pt-3 pb-1">
+                <div class="w-10 h-1 bg-white/20 rounded-full"></div>
+            </div>
+
+            <div class="px-6 pt-2 pb-8">
+                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-4">
+                    Table of Contents
+                </p>
+                <nav id="mobile-toc-list" aria-label="Table of contents">
+                    <!-- Populated by JS -->
+                </nav>
+            </div>
+
+            <div class="h-safe-bottom"></div>
+        </div>
+    </div>
+</BaseLayout>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        // ── Mobile ToC Drawer ──
+        const tocToggle = document.getElementById("mobile-toc-toggle");
+        const tocDrawer = document.getElementById("mobile-toc-drawer");
+        const tocBackdrop = document.getElementById("mobile-toc-backdrop");
+        const tocPanel = document.getElementById("mobile-toc-panel");
+        const tocList = document.getElementById("mobile-toc-list");
+        let tocOpen = false;
+
+        function openToc() {
+            tocOpen = true;
+            tocDrawer?.classList.remove("pointer-events-none");
+            tocDrawer?.setAttribute("aria-hidden", "false");
+            tocToggle?.setAttribute("aria-expanded", "true");
+            tocBackdrop?.classList.remove("opacity-0");
+            tocBackdrop?.classList.add("opacity-100");
+            tocPanel?.classList.remove("translate-y-full");
+            tocPanel?.classList.add("translate-y-0");
+        }
+
+        function closeToc() {
+            tocOpen = false;
+            tocDrawer?.setAttribute("aria-hidden", "true");
+            tocToggle?.setAttribute("aria-expanded", "false");
+            tocBackdrop?.classList.add("opacity-0");
+            tocBackdrop?.classList.remove("opacity-100");
+            tocPanel?.classList.add("translate-y-full");
+            tocPanel?.classList.remove("translate-y-0");
+            setTimeout(() => {
+                if (!tocOpen) tocDrawer?.classList.add("pointer-events-none");
+            }, 350);
+        }
+
+        tocToggle?.addEventListener("click", () => {
+            tocOpen ? closeToc() : openToc();
+        });
+
+        tocBackdrop?.addEventListener("click", closeToc);
+
+        // Build mobile ToC from article headings
+        const article = document.getElementById("article-content");
+        if (article && tocList) {
+            const headings = Array.from(article.querySelectorAll("h2, h3")) as HTMLElement[];
+
+            headings.forEach((h) => {
+                if (!h.id) {
+                    h.id = h.textContent!.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+                }
+
+                const link = document.createElement("a");
+                link.href = `#${h.id}`;
+                link.textContent = h.textContent || "";
+                const isH3 = h.tagName === "H3";
+                link.className = `block py-2.5 text-sm transition-colors ${isH3 ? "pl-4 text-gray-500" : "text-gray-300 font-medium"} active:text-blue-400`;
+                link.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    closeToc();
+                    // Small delay to let drawer close before scrolling
+                    setTimeout(() => {
+                        const target = document.getElementById(h.id);
+                        target?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }, 100);
+                });
+                tocList.appendChild(link);
+            });
+
+            // Hide toggle if no headings
+            if (headings.length === 0 && tocToggle) {
+                tocToggle.style.display = "none";
+            }
+        }
+    });
+</script>

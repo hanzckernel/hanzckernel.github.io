@@ -1,0 +1,83 @@
+---
+// BlogToc.astro — client-side Table of Contents
+// Scans #article-content for h2/h3 and builds a sticky ToC with active highlighting
+---
+
+<nav id="toc" aria-label="Table of Contents">
+    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-4">
+        On this page
+    </p>
+    <ul id="toc-list" class="space-y-1 text-sm">
+        <!-- Populated by JS -->
+    </ul>
+</nav>
+
+<script>
+    function buildToc() {
+        const article = document.getElementById("article-content");
+        const list = document.getElementById("toc-list");
+        if (!article || !list) return;
+
+        const headings = Array.from(
+            article.querySelectorAll("h2, h3")
+        ) as HTMLElement[];
+
+        if (headings.length === 0) {
+            const nav = document.getElementById("toc");
+            if (nav) nav.style.display = "none";
+            return;
+        }
+
+        // Assign IDs to headings that don't have one
+        headings.forEach((h, i) => {
+            if (!h.id) {
+                h.id =
+                    h.textContent
+                        ?.toLowerCase()
+                        .replace(/[^a-z0-9]+/g, "-")
+                        .replace(/^-|-$/g, "") || `heading-${i}`;
+            }
+        });
+
+        // Build list items
+        list.innerHTML = headings
+            .map((h) => {
+                const isH3 = h.tagName === "H3";
+                return `<li class="${isH3 ? "pl-3" : ""}">
+                    <a
+                        href="#${h.id}"
+                        data-toc-id="${h.id}"
+                        class="toc-link block py-1 text-gray-400 hover:text-white transition-colors duration-150 leading-snug ${isH3 ? "text-xs" : "text-sm"}"
+                    >${h.textContent}</a>
+                </li>`;
+            })
+            .join("");
+
+        // IntersectionObserver for active section highlighting
+        const links = list.querySelectorAll<HTMLAnchorElement>(".toc-link");
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const id = entry.target.id;
+                    const link = list.querySelector(`[data-toc-id="${id}"]`);
+                    if (entry.isIntersecting) {
+                        links.forEach((l) =>
+                            l.classList.remove(
+                                "text-blue-400",
+                                "font-semibold"
+                            )
+                        );
+                        link?.classList.add("text-blue-400", "font-semibold");
+                    }
+                });
+            },
+            { rootMargin: "-10% 0px -80% 0px" }
+        );
+
+        headings.forEach((h) => observer.observe(h));
+    }
+
+    // Run on initial load and after Astro page transitions
+    document.addEventListener("astro:page-load", buildToc);
+</script>

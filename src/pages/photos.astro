@@ -1,0 +1,292 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const photos = [
+    {
+        src: "/images/index.jpg",
+        title: "Swan on the Rheinaue",
+        caption: "Bonn, Germany — Winter 2020",
+        description:
+            "A solitary swan glides across the frozen Rheinaue lake in Bonn, framed by bare winter trees reflected in the still water. Used as the homepage background.",
+        page: "/",
+        pageLabel: "Home",
+    },
+    {
+        src: "/images/work.jpg",
+        title: "Harmonic Analysis Chalkboard",
+        caption: "Universität Bonn — 2018",
+        description:
+            "A chalkboard filled with the notation of harmonic analysis — heat kernels, spectral theory, and functional calculus. Photographed after a lecture at the University of Bonn. Used as the Work & Gallery background.",
+        page: "/work",
+        pageLabel: "Work & Gallery",
+    },
+    {
+        src: "/images/about.jpg",
+        title: "Manarola, Cinque Terre",
+        caption: "Liguria, Italy — Summer 2019",
+        description:
+            "A bird takes flight over the colourful cliffside village of Manarola, one of the five villages of Cinque Terre on the Italian Riviera. Used as the About page background.",
+        page: "/about",
+        pageLabel: "About",
+    },
+    {
+        src: "/images/contact.jpg",
+        title: "Frosty Morning Path",
+        caption: "Göttingen, Germany — Winter 2023",
+        description:
+            "A quiet, frost-covered path lined with bare trees in Göttingen on a still winter morning. The silence of the scene mirrors the contemplative mood of writing and correspondence. Used as the Blog & Contact background.",
+        page: "/blog",
+        pageLabel: "Blog & Contact",
+    },
+];
+---
+
+<BaseLayout
+    title="Photos | Zhicheng Han"
+    description="Full-resolution background photographs used across this website."
+    backgroundImage="/images/index.jpg"
+    overlayStrength="bg-black/70"
+    mobileBackgroundPosition="60% center"
+>
+    <section class="py-8 md:py-12">
+        <h1 class="text-4xl md:text-7xl font-extrabold tracking-tighter mb-3 md:mb-4 leading-none">
+            The <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Photos</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-300 mb-10 md:mb-16 max-w-2xl leading-relaxed">
+            The photographs behind this website — tap any image to view it at full resolution.
+        </p>
+
+        <!-- Photo grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+            {photos.map((photo, i) => (
+                <button
+                    class="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 active:scale-[0.98] transition-all duration-300 text-left focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    data-photo-index={i}
+                    aria-label={`View ${photo.title} at full resolution`}
+                >
+                    <!-- Image -->
+                    <div class="aspect-[4/3] overflow-hidden">
+                        <img
+                            src={photo.src}
+                            alt={photo.title}
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            loading="lazy"
+                        />
+                    </div>
+                    <!-- Caption overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4 md:p-6">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-400 mb-1">{photo.caption}</p>
+                        <h2 class="text-lg md:text-xl font-bold tracking-tight text-white mb-1">{photo.title}</h2>
+                        <!-- Always visible on mobile, hover-reveal on desktop -->
+                        <p class="text-xs text-gray-400 line-clamp-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">{photo.description}</p>
+                        <div class="flex items-center justify-between mt-2 md:mt-3">
+                            <a
+                                href={photo.page}
+                                class="text-[10px] uppercase tracking-widest text-gray-400 hover:text-blue-400 transition-colors py-1"
+                                onclick="event.stopPropagation()"
+                            >
+                                Used on: {photo.pageLabel}
+                            </a>
+                            <span class="text-[10px] uppercase tracking-widest text-gray-500 group-hover:text-white transition-colors flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                </svg>
+                                Full res
+                            </span>
+                        </div>
+                    </div>
+                </button>
+            ))}
+        </div>
+    </section>
+
+    <!-- Lightbox — touch-optimized -->
+    <div
+        id="lightbox"
+        class="fixed inset-0 z-[200] bg-black/95 backdrop-blur-sm hidden items-center justify-center"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Photo lightbox"
+    >
+        <!-- Close button — large touch target -->
+        <button
+            id="lightbox-close"
+            class="absolute top-3 right-3 md:top-5 md:right-5 text-gray-400 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10 active:bg-white/20 z-10 min-w-[48px] min-h-[48px] flex items-center justify-center"
+            aria-label="Close lightbox"
+        >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+
+        <!-- Prev / Next — large touch targets, hidden on mobile (use swipe instead) -->
+        <button
+            id="lightbox-prev"
+            class="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10 active:bg-white/20 z-10 min-w-[48px] min-h-[48px] hidden md:flex items-center justify-center"
+            aria-label="Previous photo"
+        >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </button>
+        <button
+            id="lightbox-next"
+            class="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-3 rounded-full hover:bg-white/10 active:bg-white/20 z-10 min-w-[48px] min-h-[48px] hidden md:flex items-center justify-center"
+            aria-label="Next photo"
+        >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </button>
+
+        <!-- Image + caption — optimized for mobile -->
+        <div id="lightbox-content" class="flex flex-col items-center max-w-6xl w-full px-4 md:px-16 gap-4 md:gap-6">
+            <img
+                id="lightbox-img"
+                src=""
+                alt=""
+                class="max-h-[60vh] md:max-h-[75vh] max-w-full object-contain rounded-xl shadow-2xl select-none"
+                draggable="false"
+            />
+            <div class="text-center px-4">
+                <p id="lightbox-caption" class="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-400 mb-1"></p>
+                <h3 id="lightbox-title" class="text-xl md:text-2xl font-bold text-white mb-1 md:mb-2"></h3>
+                <p id="lightbox-desc" class="text-xs md:text-sm text-gray-400 max-w-xl leading-relaxed"></p>
+                <p id="lightbox-counter" class="text-xs text-gray-600 mt-2 md:mt-3"></p>
+                <!-- Mobile swipe hint -->
+                <p class="md:hidden text-[10px] text-gray-600 mt-1">Swipe left or right to navigate</p>
+            </div>
+        </div>
+    </div>
+</BaseLayout>
+
+<script>
+    const photos = [
+        {
+            src: "/images/index.jpg",
+            title: "Swan on the Rheinaue",
+            caption: "Bonn, Germany — Winter 2020",
+            description:
+                "A solitary swan glides across the frozen Rheinaue lake in Bonn, framed by bare winter trees reflected in the still water.",
+        },
+        {
+            src: "/images/work.jpg",
+            title: "Harmonic Analysis Chalkboard",
+            caption: "Universität Bonn — 2018",
+            description:
+                "A chalkboard filled with the notation of harmonic analysis — heat kernels, spectral theory, and functional calculus. Photographed after a lecture at the University of Bonn.",
+        },
+        {
+            src: "/images/about.jpg",
+            title: "Manarola, Cinque Terre",
+            caption: "Liguria, Italy — Summer 2019",
+            description:
+                "A bird takes flight over the colourful cliffside village of Manarola, one of the five villages of Cinque Terre on the Italian Riviera.",
+        },
+        {
+            src: "/images/contact.jpg",
+            title: "Frosty Morning Path",
+            caption: "Göttingen, Germany — Winter 2023",
+            description:
+                "A quiet, frost-covered path lined with bare trees in Göttingen on a still winter morning.",
+        },
+    ];
+
+    let currentIndex = 0;
+
+    const lightbox = document.getElementById("lightbox")!;
+    const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+    const lightboxTitle = document.getElementById("lightbox-title")!;
+    const lightboxCaption = document.getElementById("lightbox-caption")!;
+    const lightboxDesc = document.getElementById("lightbox-desc")!;
+    const lightboxCounter = document.getElementById("lightbox-counter")!;
+
+    function openLightbox(index: number) {
+        currentIndex = ((index % photos.length) + photos.length) % photos.length;
+        const photo = photos[currentIndex];
+        lightboxImg.src = photo.src;
+        lightboxImg.alt = photo.title;
+        lightboxTitle.textContent = photo.title;
+        lightboxCaption.textContent = photo.caption;
+        lightboxDesc.textContent = photo.description;
+        lightboxCounter.textContent = `${currentIndex + 1} / ${photos.length}`;
+        lightbox.classList.remove("hidden");
+        lightbox.classList.add("flex");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+        lightbox.classList.add("hidden");
+        lightbox.classList.remove("flex");
+        document.body.style.overflow = "";
+    }
+
+    // Wire up grid buttons
+    document.querySelectorAll("[data-photo-index]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const idx = parseInt((btn as HTMLElement).dataset.photoIndex || "0");
+            openLightbox(idx);
+        });
+    });
+
+    document.getElementById("lightbox-close")?.addEventListener("click", closeLightbox);
+    document.getElementById("lightbox-prev")?.addEventListener("click", () => openLightbox(currentIndex - 1));
+    document.getElementById("lightbox-next")?.addEventListener("click", () => openLightbox(currentIndex + 1));
+
+    // Click outside to close
+    lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    // Keyboard navigation
+    document.addEventListener("keydown", (e) => {
+        if (lightbox.classList.contains("hidden")) return;
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "ArrowLeft") openLightbox(currentIndex - 1);
+        if (e.key === "ArrowRight") openLightbox(currentIndex + 1);
+    });
+
+    // Touch swipe gestures for lightbox
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isSwiping = false;
+
+    const lightboxContent = document.getElementById("lightbox-content");
+
+    lightbox.addEventListener("touchstart", (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isSwiping = true;
+    }, { passive: true });
+
+    lightbox.addEventListener("touchmove", (e) => {
+        if (!isSwiping) return;
+        // Prevent vertical scroll while swiping horizontally in lightbox
+        const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
+        const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
+        if (deltaX > deltaY && deltaX > 10) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    lightbox.addEventListener("touchend", (e) => {
+        if (!isSwiping) return;
+        isSwiping = false;
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = Math.abs(touchEndY - touchStartY);
+        const SWIPE_THRESHOLD = 50;
+
+        // Only register as swipe if horizontal movement > vertical
+        if (Math.abs(deltaX) > SWIPE_THRESHOLD && Math.abs(deltaX) > deltaY) {
+            if (deltaX < 0) {
+                // Swipe left → next
+                openLightbox(currentIndex + 1);
+            } else {
+                // Swipe right → prev
+                openLightbox(currentIndex - 1);
+            }
+        }
+    }, { passive: true });
+</script>

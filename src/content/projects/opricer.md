@@ -1,7 +1,7 @@
 ---
 title: Option Pricing Project
 description: A web application for pricing financial options using various models.
-image: /images/shou.png
+image: /images/cards/code-fintech.svg
 url: http://opricer.herokuapp.com
 github: https://github.com/hanzckernel/opricer
 tags: [Python, Django, Finance]

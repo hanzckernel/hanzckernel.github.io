@@ -1,33 +1,62 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Contact Me | Zhicheng Han" description="How to reach me for collaborations or inquiries.">
-	<section class="py-24 max-w-4xl mx-auto flex flex-col justify-center items-center text-center">
-		<h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter mb-8 leading-none">
+<BaseLayout
+	title="Contact Me | Zhicheng Han"
+	description="How to reach me for collaborations or inquiries."
+	backgroundImage="/images/contact.jpg"
+	backgroundCaption="Frosty morning path, Göttingen — Winter 2023"
+>
+	<section
+		class="py-24 max-w-4xl mx-auto flex flex-col justify-center items-center text-center"
+	>
+		<h1
+			class="text-6xl md:text-8xl font-extrabold tracking-tighter mb-8 leading-none"
+		>
 			Contact <span class="text-blue-400">Me</span>
 		</h1>
 		<p class="text-2xl text-gray-400 mb-16 max-w-2xl leading-relaxed">
-			Interested in a collaboration or just want to say hi? Feel free to reach out.
+			Interested in a collaboration or just want to say hi? Feel free to
+			reach out.
 		</p>
 
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-			<div class="p-10 bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl group hover:border-blue-500/50 transition-all duration-500">
-				<h3 class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-6 group-hover:text-blue-400">Email</h3>
-				<a href="mailto:hanzc.kernel@gmail.com" class="text-xl font-medium hover:text-blue-400 transition-colors">
+			<div
+				class="p-10 bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl group hover:border-blue-500/50 transition-all duration-500"
+			>
+				<h3
+					class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-6 group-hover:text-blue-400"
+				>
+					Email
+				</h3>
+				<a
+					href="mailto:hanzc.kernel@gmail.com"
+					class="text-xl font-medium hover:text-blue-400 transition-colors"
+				>
 					hanzc.kernel@gmail.com
 				</a>
 			</div>
-			
-			<div class="p-10 bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl group hover:border-blue-500/50 transition-all duration-500">
-				<h3 class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-6 group-hover:text-blue-400">Phone</h3>
-				<p class="text-xl font-medium">
-					(+49) 157 72680155
-				</p>
+
+			<div
+				class="p-10 bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl group hover:border-blue-500/50 transition-all duration-500"
+			>
+				<h3
+					class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-6 group-hover:text-blue-400"
+				>
+					Phone
+				</h3>
+				<p class="text-xl font-medium">(+49) 157 72680155</p>
 			</div>
 
-			<div class="p-10 bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl group hover:border-blue-500/50 transition-all duration-500">
-				<h3 class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-6 group-hover:text-blue-400">Location</h3>
+			<div
+				class="p-10 bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl group hover:border-blue-500/50 transition-all duration-500"
+			>
+				<h3
+					class="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-6 group-hover:text-blue-400"
+				>
+					Location
+				</h3>
 				<p class="text-xl font-medium leading-tight">
 					Göttingen, Germany
 				</p>

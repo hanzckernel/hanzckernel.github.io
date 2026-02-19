@@ -26,14 +26,7 @@ const papers = defineCollection({
 	}),
 });
 
-const interests = defineCollection({
-	type: 'content',
-	schema: z.object({
-		title: z.string(),
-		images: z.array(z.string()).default([]),
-		order: z.number().default(0),
-	}),
-});
+
 
 const blog = defineCollection({
 	type: 'content',
@@ -50,6 +43,5 @@ const blog = defineCollection({
 export const collections = {
 	projects,
 	papers,
-	interests,
 	blog,
 };
