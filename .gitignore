@@ -37,3 +37,7 @@ public/pagefind/
 test-results/
 playwright-report/
 blob-report/
+
+# Gemini
+.gemini/
+GEMINI.md
