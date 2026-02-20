@@ -27,9 +27,8 @@ for (const path of pages) {
 
 test('navigation should work between home and about', async ({ page }) => {
   await page.goto('/');
-  // Click on "About" link - update selector to match your layout
-  // I'll try finding by text
-  const aboutLink = page.getByRole('link', { name: /about/i });
+  // Select the "About" link specifically from the main navigation to avoid strict mode violations
+  const aboutLink = page.getByRole('navigation').getByRole('link', { name: 'About', exact: true }).first();
   if (await aboutLink.isVisible()) {
     await aboutLink.click();
     await expect(page).toHaveURL(/\/about/);
